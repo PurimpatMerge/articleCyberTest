@@ -35,6 +35,25 @@ export const getAllRelationArticleUser = (req, res, next) => {
     });
   };
 
+//get all the  data
+export const getAllArticleUser = (req, res, next) => {
+    const query = `
+      SELECT *
+      FROM articles
+    `;
+    
+    connection.query(query, (error, results) => {
+      if (error) {
+        // Handle the database query error with a 500 status code
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+    
+      res.status(200).json({
+        results
+      });
+    });
+  };
+
   // get by id
   export const getArticleById = async (req, res, next) => {
     try {

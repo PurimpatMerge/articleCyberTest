@@ -6,7 +6,8 @@ import {
   getSearchRelationArticleUser,
   deleteArticle,
   incrementArticleView,
-  getArticleById
+  getArticleById,
+  getAllArticleUser
 } from "../controllers/article.js";
 import {
   validationArticle,
@@ -21,6 +22,7 @@ router.post("/createArticle/:id", verifyUser,validationArticle, createArticle);
 router.post("/updateArticle/:id", validateArticleUpdate, updateArticle);
 router.get("/view/:id", getArticleById);
 router.get("/", getAllRelationArticleUser);
+router.get("/table", getAllArticleUser);
 router.get("/search/", getSearchRelationArticleUser);
 router.delete("/deleteArticle/:id", deleteArticle);
 // add counter view

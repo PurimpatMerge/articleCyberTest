@@ -1,6 +1,6 @@
 import Navbar from '../components/home/Navbar'
 import bg from '../assets/bg-room.jpg'
-import Editarticletable from '../components/editarticle/Editarticletable'
+import Editarticletable from '../components/editarticle/Editarticletable.jsx'
 const EditArticle = () => {
     return (
         <div >
