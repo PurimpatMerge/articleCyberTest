@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
@@ -111,6 +111,9 @@ const ShowArticle = () => {
                   <Typography gutterBottom variant="h5" component="div">
                     {item.article?.title}
                   </Typography>
+                  <Typography gutterBottom component="div">
+                    author: {item.article?.author}
+                  </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {item.article?.content}
                   </Typography>
@@ -125,7 +128,16 @@ const ShowArticle = () => {
                 </CardContent>
                 <CardContent className="flex justify-end">
                   <Typography variant="body2" color="text.secondary">
-                    {item.article?.updatedAt}
+                    {item.article?.updatedAt
+                      ? new Date(item.article.updatedAt).toLocaleDateString(
+                          "en-US",
+                          {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }
+                        )
+                      : ""}
                   </Typography>
                 </CardContent>
                 <CardActions className="flex justify-center">

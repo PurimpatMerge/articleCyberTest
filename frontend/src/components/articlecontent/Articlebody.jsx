@@ -1,34 +1,70 @@
-import bg from '../../assets/bg-room.jpg'
+import bg from '../../assets/bg-room.jpg';
 import Avatar from '@mui/material/Avatar';
-const Articlebody = () => {
-    
-    return (
-        <div className="container mx-auto my-10 bg-white p-5">
-            {/* Header */}
-            <div className="my-5 text-center">
-                <h1 className='font-bold text-3xl'>การประยุกต์ใช้องค์ความรู้ทางวัฒนธรรมประเพณีท้องถิ่น ในการอนุรักษ์ฟื้นฟูป่าชุมชนริมลำน้ำชี ของชุมชนบ้านมะระ ตำบลหนองเต็ง อำเภอกระสัง จังหวัดบุรีรัมย์</h1>
-            </div>
-            {/* Avatar */}
-            <div className='flex'>
-                <Avatar alt="avatar" src={bg} />
-                <div className='my-auto gap-1 mx-1 flex'>
-                    <p>ชื่อ นรามสกุล</p>
-                    <p className='text-yellow-500'>11/02/2222</p>
-                </div>
-            </div>
-            {/* Image */}
-            <div className='flex justify-center'>
-                <img src={bg} alt="articlebg" className='h-[600px] bg-cover' />
-            </div>
-            {/* content */}
-            <div className='mt-10'>
-                <p>
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequuntur nulla reprehenderit ad magni quaerat? Dolores incidunt illo dignissimos beatae similique nesciunt laboriosam natus architecto ratione sit adipisci impedit sed eaque quaerat, dolor nam vitae veniam totam animi corporis. Alias tempore iste amet consequuntur provident fugiat ut facere earum dolorum ex quia, beatae ad vitae doloremque minima totam corporis? Excepturi unde ipsam necessitatibus? Mollitia ab excepturi non hic, nam maxime neque libero, fuga rerum dignissimos consequuntur. In, consectetur et. Molestiae quis tempore nam, aperiam facilis voluptatum asperiores corporis, aspernatur fuga vero quae, eos itaque pariatur? Quibusdam accusamus rem sapiente quos hic.
-                </p>
-            </div>
-        </div>
+import useFetch from "../../hooks/useFetch";
+import { useParams } from 'react-router-dom';
 
-    )
-}
+const Articlebody = () => {
+  const { id } = useParams();
+
+  const { data } = useFetch(`article/view/${id}`);
+
+  // Check if data is available
+  if (!data || !data.relationData || data.relationData.length === 0) {
+    return <div>Loading...</div>;
+  }
+
+  // Extract the necessary information from the data object
+  const {
+    user: { fname, lname, updateAt } = {},
+    article: { title, content, author, publishedAt, category, tags, image, viewsCount, likesCount } = {},
+  } = data.relationData[0] || {};
+
+  // Format the Published At date
+  const formattedPublishedAt = new Date(publishedAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  return (
+    <div className="container mx-auto my-10 bg-white p-5 flex">
+      {/* Article */}
+      <div className="w-70">
+        {/* Header */}
+        <div className="my-5 text-center">
+          <h1 className="font-bold text-3xl">{title}</h1>
+        </div>
+        {/* Image */}
+        <div className="flex justify-center">
+          <img src={image} alt="articlebg" className="h-[600px] bg-cover" />
+        </div>
+        {/* Content */}
+        <div className="mt-10">
+          <p>{content}</p>
+        </div>
+      </div>
+      {/* User */}
+      <div className="w-30 ml-5">
+        {/* Avatar */}
+        <div className="flex mb-4">
+          <Avatar alt="avatar" src={bg} />
+          <div className="my-auto gap-1 mx-1 flex flex-col">
+            <p>{fname} {lname}</p>
+            <p className="text-yellow-500">{updateAt}</p>
+          </div>
+        </div>
+        {/* User Details */}
+        <div>
+          <p><strong>Author:</strong> {author}</p>
+          <p><strong>Published At:</strong> {formattedPublishedAt}</p>
+          <p><strong>Category:</strong> {category}</p>
+          <p><strong>Tags:</strong> {tags}</p>
+          <p><strong>Views:</strong> {viewsCount}</p>
+          <p><strong>Likes:</strong> {likesCount}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default Articlebody;

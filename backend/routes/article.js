@@ -6,6 +6,7 @@ import {
   getSearchRelationArticleUser,
   deleteArticle,
   incrementArticleView,
+  getArticleById
 } from "../controllers/article.js";
 import {
   validationArticle,
@@ -18,6 +19,7 @@ const router = express.Router();
 //Users routes
 router.post("/createArticle/:id", verifyUser,validationArticle, createArticle);
 router.post("/updateArticle/:id", validateArticleUpdate, updateArticle);
+router.get("/view/:id", getArticleById);
 router.get("/", getAllRelationArticleUser);
 router.get("/search/", getSearchRelationArticleUser);
 router.delete("/deleteArticle/:id", deleteArticle);
