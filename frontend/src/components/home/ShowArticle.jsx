@@ -13,6 +13,7 @@ import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import img from "../../assets/bg-room.jpg";
+import axios from "axios";
 
 const ShowArticle = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -53,6 +54,15 @@ const ShowArticle = () => {
     setPage(1); // Reset page to 1 whenever searchQuery or limit changes
   }, [searchQuery, limit]);
 
+  //view handler
+  const viewAdd = async (id) => {
+    try {
+      await axios.post(`http://localhost:8000/v1/api/article/addView/${id}`);
+      
+    } catch (error) {
+    console.log(error)
+    }
+  };
   return (
     <div>
       {/* Search and Add */}
@@ -126,7 +136,13 @@ const ShowArticle = () => {
                     </Typography>
                   </div>
                 </CardContent>
-                <CardContent className="flex justify-end">
+                <CardContent className="flex justify-between">
+                <Typography variant="body2" color="text.secondary">
+                     Like {item.article?.likesCount}
+                  </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    view {item.article?.viewsCount}
+                  </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {item.article?.updatedAt
                       ? new Date(item.article.updatedAt).toLocaleDateString(
@@ -142,7 +158,7 @@ const ShowArticle = () => {
                 </CardContent>
                 <CardActions className="flex justify-center">
                   <Link to={`/ArticleContent/${item.article?.id}`}>
-                    <Button size="small">Read More</Button>
+                    <Button size="small" onClick={() => viewAdd(item.article?.id)} >Read More</Button>
                   </Link>
                 </CardActions>
               </Card>
