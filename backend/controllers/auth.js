@@ -3,7 +3,8 @@ import bcrypt from "bcryptjs";
 import { connection } from "../index.mjs";
 
 export const login = (req, res, next) => {
-  const { uemail, upassword } = req.body;
+
+  const { uemail, password } = req.body;
 
   try {
     // Check if the user exists
@@ -21,19 +22,20 @@ export const login = (req, res, next) => {
 
       // Verify the password
       const storedPassword = results[0].upassword;
-      const passwordMatch = await bcrypt.compare(upassword, storedPassword);
+      const passwordMatch = await bcrypt.compare(password, storedPassword);
 
       if (!passwordMatch) {
         return res.status(401).json({ message: "Invalid email or password" });
       }
 
       // Generate a JWT token
-      const token = jwt.sign({ userId: results[0].userid }, process.env.JWT, { expiresIn: "7d" });
+      const token = jwt.sign({ userId: results[0].userid,uemail: results[0].uemail }, process.env.JWT, { expiresIn: "7d" });
 
       // Save the access token in a cookie
-      res.cookie("access_token", token, { httpOnly: true });
+      res.cookie("access_token", token, { httpOnly: true, secure: true, sameSite: "None" });
 
-      res.status(200).json({ message: "Login successful" ,accessToken:token});
+
+      res.status(200).json({ message: "Login successful" ,accessToken:token, userid:results[0].userid});
     });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });

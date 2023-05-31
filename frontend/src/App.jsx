@@ -19,8 +19,8 @@ const App = () => {
         <Route path="/articlecontent/:id" element={<ArticleContent />} />
         <Route path="/addarticle" element={<AddArticle />} />
         <Route path="/editarticle" element={<EditArticle />} />
-        <Route path="/editarticlebody" element={<Editarticlebody />} />
         <Route path="/editusers" element={<EditUsers />} />
+        <Route path="/editarticlebody" element={<Editarticlebody />} />
       </Routes>
     </BrowserRouter>
   )
