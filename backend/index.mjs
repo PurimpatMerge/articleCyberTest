@@ -4,7 +4,8 @@ import authRoute from "./routes/auth.js";
 import express from "express";
 import mysql from 'mysql2';
 import dotenv from "dotenv";
-import cookieParser from "cookie-parser"; 
+import cookieParser from "cookie-parser";
+import cors from "cors"; // Import the cors package
 
 const app = express();
 app.use(cookieParser());
@@ -24,7 +25,8 @@ connection.connect((error) => {
   console.log('Connected to MySQL database artical.');
 });
 
-//middlewares
+// Middlewares
+app.use(cors()); // Use the cors middleware
 app.use(express.json());
 
 app.use("/v1/api/users", usersRoute);
@@ -41,7 +43,6 @@ app.use((err, req, res, next) => {
     stack: err.stack,
   });
 });
-
 
 app.listen(8000, () => {
   console.log("Connected to backend.");

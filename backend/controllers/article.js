@@ -40,13 +40,21 @@ export const getAllRelationArticleUser = (req, res, next) => {
     const offset = (page - 1) * limit;
   
     let query = `
-      SELECT *
+      SELECT *,
+        COUNT(*) OVER() AS totalCount
       FROM users
       JOIN user_articles ON users.userid = user_articles.userId
       JOIN articles ON user_articles.articleId = articles.id
     `;
   
-    if (search) {
+    let countQuery = `
+      SELECT COUNT(*) AS totalCount
+      FROM users
+      JOIN user_articles ON users.userid = user_articles.userId
+      JOIN articles ON user_articles.articleId = articles.id
+    `;
+  
+    if (search !== "") {
       const searchQuery = connection.escape(`%${search}%`); // Escaping and formatting search term
   
       query += `
@@ -56,6 +64,21 @@ export const getAllRelationArticleUser = (req, res, next) => {
           OR articles.author LIKE ${searchQuery}
           OR articles.publishedAt LIKE ${searchQuery}
           OR articles.category LIKE ${searchQuery}
+          OR articles.category LIKE ${searchQuery}
+          OR users.fname LIKE ${searchQuery}
+          OR users.lname LIKE ${searchQuery}
+      `;
+  
+      countQuery += `
+        WHERE users.username LIKE ${searchQuery}
+          OR articles.title LIKE ${searchQuery}
+          OR articles.content LIKE ${searchQuery}
+          OR articles.author LIKE ${searchQuery}
+          OR articles.publishedAt LIKE ${searchQuery}
+          OR articles.category LIKE ${searchQuery}
+          OR articles.category LIKE ${searchQuery}
+          OR users.fname LIKE ${searchQuery}
+          OR users.lname LIKE ${searchQuery}
       `;
     }
   
@@ -70,16 +93,26 @@ export const getAllRelationArticleUser = (req, res, next) => {
         return res.status(500).json({ error: "Internal Server Error" });
       }
   
-      const relationData = results.map(mapRelationData);
+      connection.query(countQuery, (countError, countResults) => {
+        if (countError) {
+          // Handle the count query error with a 500 status code
+          return res.status(500).json({ error: "Internal Server Error" });
+        }
   
-      const totalViewsCount = results.reduce((sum, row) => sum + row.viewsCount, 0);
+        const totalCount = countResults[0].totalCount;
+        const relationData = results.map(mapRelationData);
   
-      res.status(200).json({
-        countAllViews: totalViewsCount,
-        relationData
+        const totalViewsCount = results.reduce((sum, row) => sum + row.viewsCount, 0);
+  
+        res.status(200).json({
+          countAllViews: totalViewsCount,
+          relationData,
+          totalCount,
+        });
       });
     });
   };
+  
   
 
 export const createArticle = (req, res, next) => {

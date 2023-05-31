@@ -1,6 +1,7 @@
 import bg from '../../assets/bg-room.jpg'
 import Avatar from '@mui/material/Avatar';
 const Articlebody = () => {
+    
     return (
         <div className="container mx-auto my-10 bg-white p-5">
             {/* Header */}
