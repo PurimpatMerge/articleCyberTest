@@ -70,6 +70,7 @@ const Editarticletable = () => {
     : filteredData;
 
   const columns = [
+   
     {
       name: "Title",
       accessor: "title",
@@ -126,6 +127,7 @@ const Editarticletable = () => {
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell>image</TableCell>
               {columns.map((column) => (
                 <TableCell key={column.name} onClick={() => handleSort(column)}>
                   {column.name}
@@ -140,7 +142,9 @@ const Editarticletable = () => {
           <TableBody>
     {paginatedData.map((row) => (
       <TableRow key={row.id}>
+          <img src={row.image}style={{ height: "50px",width: "50px" }}/>
         {columns.map((column) => (
+          
           <TableCell key={column.name}>
             {row[column.accessor]}
           </TableCell>
