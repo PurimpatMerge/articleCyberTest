@@ -29,13 +29,11 @@ export const login = (req, res, next) => {
       }
 
       // Generate a JWT token
-      const token = jwt.sign({ userId: results[0].userid,uemail: results[0].uemail }, process.env.JWT, { expiresIn: "7d" });
-
+      const token = jwt.sign({ userId: results[0].userid}, process.env.JWT, { expiresIn: "7d" });
+console.log(token);
       // Save the access token in a cookie
-      res.cookie("access_token", token, { httpOnly: true, secure: true, sameSite: "None" });
+      return res.status(200).cookie("accessToken", token, { httpOnly: true}).json({ message: "Login successful" ,accessToken:token, userid:results[0].userid});
 
-
-      res.status(200).json({ message: "Login successful" ,accessToken:token, userid:results[0].userid});
     });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });

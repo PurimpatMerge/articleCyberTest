@@ -18,7 +18,7 @@ import {verifyUser} from "../utils/verfyToken.js"
 const router = express.Router();
 
 //Users routes
-router.post("/createArticle/:id", verifyUser,validationArticle, createArticle);
+router.post("/createArticle/:id",verifyUser, createArticle);
 router.post("/updateArticle/:id", validateArticleUpdate, updateArticle);
 router.get("/view/:id", getArticleById);
 router.get("/", getAllRelationArticleUser);
