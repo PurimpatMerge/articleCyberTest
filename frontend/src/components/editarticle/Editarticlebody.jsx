@@ -10,13 +10,14 @@ import bg from "../../assets/bg-room.jpg";
 import { useParams } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 const Editarticlebody = () => {
   const { id } = useParams();
   const { data } = useFetch(`article/getOnlyArticleById/${id}`);
   const [imageURLs, setImageURLs] = useState([]);
   const [images, setImages] = useState([]);
   const [info, setInfo] = useState({});
+  const navigate = useNavigate();
   useEffect(() => {
     if (images.length < 1) return;
     const newImageUrls = images.map((image) => URL.createObjectURL(image));
@@ -64,6 +65,10 @@ const Editarticlebody = () => {
       await axios.put(`http://localhost:8000/v1/api/article/updateArticle/${data.results[0].id}`,
       allInfo
       );
+      
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
     }catch(err){
       console.log(err);
 

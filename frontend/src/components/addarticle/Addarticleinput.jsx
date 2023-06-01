@@ -7,9 +7,10 @@ import TextField from "@mui/material/TextField";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
 import Button from "@mui/material/Button";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 const Addarticleinput = () => {
   const [images, setImages] = useState([]);
+  const navigate = useNavigate();
   const [info, setInfo] = useState({
     image: "https://contenthub-static.grammarly.com/blog/wp-content/uploads/2022/08/BMD-3398.png",
   });
@@ -71,6 +72,8 @@ const Addarticleinput = () => {
           },
         }
       );
+
+      navigate('/');
     } catch (err) {
       console.log("You're not logged in.");
     }

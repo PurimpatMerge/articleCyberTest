@@ -6,13 +6,14 @@ import Navbar from '../components/home/Navbar';
 import { useState, useEffect } from "react";
 import TextField from '@mui/material/TextField';
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Register = () => {
 
     //   img
     const [imageURLs, setImageURLs] = useState([]);
     const [images, setImages] = useState("");
     const [info, setInfo] = useState({});
-    
+    const navigate = useNavigate();
     useEffect(() => {
         if (images?.length < 1) return;
         const newImageUrls = [];
@@ -59,11 +60,13 @@ const Register = () => {
             upicture: list,
           };
       
-   console.log(allInfo);
+
           await axios.post(
             `http://localhost:8000/v1/api/users/register`,
             allInfo,
           );
+
+          navigate('/');
         } catch (err) {
           console.log("You're not logged in.");
         }

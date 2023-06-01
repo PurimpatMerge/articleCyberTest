@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import useFetch from "../../hooks/useFetch";
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 
 const Editarticletable = () => {
   const { data } = useFetch("article/table");
@@ -21,7 +21,7 @@ const Editarticletable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "" });
-
+  const navigate = useNavigate();
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -105,7 +105,7 @@ const Editarticletable = () => {
       try {
         await axios.delete(`http://localhost:8000/v1/api/article/deleteArticle/${id}`);
      
-   
+        navigate('/');
       } catch (err) {
         console.log(err);
       }
