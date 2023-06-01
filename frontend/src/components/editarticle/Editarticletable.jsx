@@ -11,6 +11,8 @@ import {
   TextField,
 } from "@mui/material";
 import useFetch from "../../hooks/useFetch";
+import axios from 'axios';
+import { Link } from "react-router-dom";
 
 const Editarticletable = () => {
   const { data } = useFetch("article/table");
@@ -95,6 +97,21 @@ const Editarticletable = () => {
     page * rowsPerPage + rowsPerPage
   );
 
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+    if (confirmDelete) {
+      try {
+        await axios.delete(`http://localhost:8000/v1/api/article/deleteArticle/${id}`);
+     
+   
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
   return (
     <div className="container mx-auto my-5">
       <TextField
@@ -121,20 +138,22 @@ const Editarticletable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedData.map((row) => (
-              <TableRow key={row.id}>
-                {columns.map((column) => (
-                  <TableCell key={column.name}>
-                    {row[column.accessor]}
-                  </TableCell>
-                ))}
-                <TableCell>
-                  <Button variant="text">Edit</Button>
-                  <Button variant="text">Delete</Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+    {paginatedData.map((row) => (
+      <TableRow key={row.id}>
+        {columns.map((column) => (
+          <TableCell key={column.name}>
+            {row[column.accessor]}
+          </TableCell>
+        ))}
+        <TableCell>
+       <Link to={`/editarticlebody/${row.id}`}>   
+       <Button variant="text">Edit</Button> 
+              </Link>
+          <Button variant="text" onClick={() => handleDelete(row.id)}>Delete</Button>
+        </TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
         </Table>
       </TableContainer>
       <TablePagination

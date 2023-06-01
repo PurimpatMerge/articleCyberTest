@@ -5,13 +5,14 @@ import bg from '../assets/bg-room.jpg'
 import Navbar from '../components/home/Navbar';
 import { useState, useEffect } from "react";
 import TextField from '@mui/material/TextField';
-
+import axios from "axios";
 const Register = () => {
 
     //   img
     const [imageURLs, setImageURLs] = useState([]);
     const [images, setImages] = useState("");
-
+    const [info, setInfo] = useState({});
+    
     useEffect(() => {
         if (images?.length < 1) return;
         const newImageUrls = [];
@@ -24,6 +25,49 @@ const Register = () => {
         setImages([...e.target.files]);
     };
 
+    const handleChange = (e) => {
+        setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+      };
+
+      const handleSubmit = async () => {
+        try {
+          let list = [];
+      
+          if (images.length > 0) {
+            list = await Promise.all(
+              images.map(async (file) => {
+                const data = new FormData();
+                data.append("file", file);
+                data.append("upload_preset", "upload");
+      
+                const uploadRes = await axios.post(
+                  "https://api.cloudinary.com/v1_1/dwwfqdl79/image/upload",
+                  data
+                );
+      
+                const { url } = uploadRes.data;
+                return url;
+              })
+            );
+          } else {
+            // Set a default image URL if no image is selected
+            list = ["https://contenthub-static.grammarly.com/blog/wp-content/uploads/2022/08/BMD-3398.png"];
+          }
+      
+          const allInfo = {
+            ...info,
+            upicture: list,
+          };
+      
+   console.log(allInfo);
+          await axios.post(
+            `http://localhost:8000/v1/api/users/register`,
+            allInfo,
+          );
+        } catch (err) {
+          console.log("You're not logged in.");
+        }
+      };
     return (
         <div >
             <img src={bg} alt="bg" className='absolute h-screen bg-cover w-full' />
@@ -51,26 +95,26 @@ const Register = () => {
                     {/* info */}
                     <div className='grid grid-cols-2 gap-5 text-left'>
                         <div>
-                            <TextField label="Username" variant="standard" />
+                            <TextField label="Username" variant="standard" id="username"onChange={handleChange}/>
                         </div>
                         <div>
-                            <TextField label="Password" variant="standard" />
+                            <TextField label="Password" variant="standard" id="upassword" onChange={handleChange}/>
                         </div>
                         <div>
-                            <TextField label="Firstname" variant="standard" />
+                            <TextField label="Firstname" variant="standard" id="fname" onChange={handleChange} />
                         </div>
                         <div>
-                            <TextField label="Lastname" variant="standard" />
+                            <TextField label="Lastname" variant="standard" id="lname" onChange={handleChange}/>
                         </div>
                         <div>
-                            <TextField label="Email" variant="standard" />
+                            <TextField label="Email" variant="standard"id="uemail" onChange={handleChange}/>
                         </div>
 
                     </div>
 
                     {/* Button */}
                     <div className='my-5'>
-                        <button className='rounded-full bg-gray-500 p-5 w-1/2 hover:scale-105 duration-100 text-white shadow-md'>Confirm</button>
+                        <button onClick={handleSubmit} className='rounded-full bg-gray-500 p-5 w-1/2 hover:scale-105 duration-100 text-white shadow-md'>Confirm</button>
                     </div>
 
                 </div>

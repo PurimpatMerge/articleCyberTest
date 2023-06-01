@@ -5,6 +5,8 @@ const articleSchema = Joi.object({
   content: Joi.string().required(),
   author: Joi.string().required(),
   category: Joi.string().required(),
+  tags: Joi.allow(''),
+  image: Joi.allow(''),
 });
 
 
@@ -13,8 +15,8 @@ const articleUpdateSchema = Joi.object({
     content: Joi.string(),
     author: Joi.string(),
     category: Joi.string(),
-    tags: Joi.array().items(Joi.string()),
-    image: Joi.string(),
+    tags: Joi.allow(''),
+    image: Joi.allow(''),
     viewsCount: Joi.number().integer(),
     likesCount: Joi.number().integer(),
     updatedAt: Joi.date().iso()
@@ -28,6 +30,7 @@ export const validationArticle = (req, res, next) => {
   if (error) {
     // Validation failed
     const errorMessage = error.details[0].message;
+    console.log("error",errorMessage)
     return res.status(400).json({ error: errorMessage });
   }
 
@@ -40,6 +43,7 @@ export const validateArticleUpdate = (req, res, next) => {
     if (error) {
       // Validation failed
       const errorMessage = error.details[0].message;
+      console.log("error",errorMessage)
       return res.status(400).json({ error: errorMessage });
     }
   

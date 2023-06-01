@@ -54,7 +54,7 @@ export const getAllArticleUser = (req, res, next) => {
     });
   };
 
-  // get by id
+  // get by id relation
   export const getArticleById = async (req, res, next) => {
     try {
       const articleId = req.params.id;
@@ -87,7 +87,36 @@ export const getAllArticleUser = (req, res, next) => {
       return res.status(500).json({ error: "Internal Server Error" });
     }
   };
-  
+    // get by id
+    export const getOnlyArticleById = async (req, res, next) => {
+      try {
+        const articleId = req.params.id;
+        
+        const query = `
+        SELECT *
+        FROM articles
+          WHERE articles.id = ${articleId}
+        `;
+        
+        connection.query(query, (error, results) => {
+          if (error) {
+            // Handle the database query error with a 500 status code
+            return res.status(500).json({ error: "Internal Server Error" });
+          }
+          
+          // Check if the article exists
+          if (results.length === 0) {
+            return res.status(404).json({ message: "Article not found" });
+          }
+          
+          
+          res.status(200).json({ results });
+        });
+      } catch (error) {
+        // Handle any other errors that might occur
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+    };
   // search home and relation 
   export const getSearchRelationArticleUser = (req, res, next) => {
     const { search, page, limit } = req.query;

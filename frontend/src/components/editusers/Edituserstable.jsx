@@ -8,7 +8,7 @@ const Edituserstable = () => {
   const { data } = useFetch("users/");
   console.log(data);
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  // const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [imageURLs, setImageURLs] = useState([]);
   const [images, setImages] = useState('');
@@ -147,12 +147,12 @@ const Edituserstable = () => {
                 {columns.map((column) => (
                   <TableCell key={column.name}>{row[column.accessor]}</TableCell>
                 ))}
-                <TableCell>
+                {/* <TableCell>
                   <Button onClick={handleOpen} variant="text">
                     Edit
                   </Button>
                   <Button variant="text">Delete</Button>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>

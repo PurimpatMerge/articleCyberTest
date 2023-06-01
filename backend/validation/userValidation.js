@@ -6,7 +6,7 @@ const userSchema = Joi.object({
   username: Joi.string().required(),
   uemail: Joi.string().email().required(),
   upassword: Joi.string().pattern(/^(?=.*[A-Z])/).min(6).required(),
-  upicture: Joi.string().allow(''),
+  upicture: Joi.allow(''),
   updateAt: Joi.date().iso().allow('')
 });
 
@@ -26,6 +26,7 @@ export const validationUser = (req, res, next) => {
   if (error) {
     // Validation failed
     const errorMessage = error.details[0].message;
+    console.log("error",errorMessage)
     return res.status(400).json({ error: errorMessage });
   }
 
