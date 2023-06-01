@@ -124,7 +124,7 @@ const Edituserstable = () => {
 
         <Table>
           <TableHead>
-            <TableRow>
+            <TableRow className="bg-gray-500">
               {columns.map((column) => (
                 <TableCell
                   key={column.name}
@@ -143,7 +143,7 @@ const Edituserstable = () => {
           </TableHead>
           <TableBody>
             {paginatedData.map((row) => (
-              <TableRow key={row.userid}>
+              <TableRow className="bg-white" key={row.userid}>
                 {columns.map((column) => (
                   <TableCell key={column.name}>{row[column.accessor]}</TableCell>
                 ))}

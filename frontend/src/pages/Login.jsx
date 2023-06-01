@@ -59,14 +59,16 @@ const Login = () => {
           </div>
           <div className="flex flex-col">
             {/* Email */}
+            <FormControl variant="standard">
             <InputLabel>Email</InputLabel>
             <Input
               onChange={handleChange}
               id="uemail"
               value={credentials.uemail}
-            />
-            {/* Password */}
+            /> 
+             </FormControl>
             <FormControl variant="standard">
+            {/* Password */}
               <InputLabel>Password</InputLabel>
               <Input
                 onChange={handleChange}

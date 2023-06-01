@@ -130,7 +130,7 @@ export const getSearchRelationArticleUser = (req, res, next) => {
       FROM users
       JOIN user_articles ON users.userid = user_articles.userId
       JOIN articles ON user_articles.articleId = articles.id
-      ORDER BY articles.updatedAt ASC
+ 
     `;
 
   let countQuery = `
@@ -153,7 +153,7 @@ export const getSearchRelationArticleUser = (req, res, next) => {
           OR articles.category LIKE ${searchQuery}
           OR users.fname LIKE ${searchQuery}
           OR users.lname LIKE ${searchQuery}
-          ORDER BY articles.updatedAt ASC
+          
       `;
 
     countQuery += `

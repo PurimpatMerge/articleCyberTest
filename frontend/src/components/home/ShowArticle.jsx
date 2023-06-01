@@ -20,6 +20,7 @@ const ShowArticle = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(4);
   const [totalCount, setTotalCount] = useState(0);
+console.log(searchQuery);
 
   const { data } = useFetch(
     `article/search?search=${searchQuery || ""}&page=${page || 1}&limit=${
@@ -167,7 +168,7 @@ const ShowArticle = () => {
         </div>
 
         {/* Pagination */}
-        <div>
+        <div className="flex justify-center mt-20">
           {page > 1 && (
             <Button size="small" onClick={handlePreviousPage}>
               Back
@@ -217,6 +218,7 @@ const ShowArticle = () => {
             </Button>
           )}
         </div>
+
       </div>
     </div>
   );

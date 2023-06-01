@@ -126,7 +126,7 @@ const Editarticletable = () => {
       <TableContainer>
         <Table>
           <TableHead>
-            <TableRow>
+            <TableRow className="bg-gray-500">
               <TableCell>image</TableCell>
               {columns.map((column) => (
                 <TableCell key={column.name} onClick={() => handleSort(column)}>
@@ -141,7 +141,7 @@ const Editarticletable = () => {
           </TableHead>
           <TableBody>
     {paginatedData.map((row) => (
-      <TableRow key={row.id}>
+      <TableRow className="bg-white" key={row.id}>
           <img src={row.image}style={{ height: "50px",width: "50px" }}/>
         {columns.map((column) => (
           
@@ -153,7 +153,7 @@ const Editarticletable = () => {
        <Link to={`/editarticlebody/${row.id}`}>   
        <Button variant="text">Edit</Button> 
               </Link>
-          <Button variant="text" onClick={() => handleDelete(row.id)}>Delete</Button>
+          <Button variant="text"  onClick={() => handleDelete(row.id)} color="error">Delete</Button>
         </TableCell>
       </TableRow>
     ))}
